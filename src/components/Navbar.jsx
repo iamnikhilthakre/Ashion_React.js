@@ -20,6 +20,16 @@ function Navbar() {
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 992) {
+                setIsMenuOpen(false);
+            }
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -184,8 +194,8 @@ function Navbar() {
                             </div>
                         </div>
                     </div>
-                    <div className="canvas__open" onClick={toggleMenu}>
-                        <i className="fa fa-bars"></i>
+                    <div className="canvas__open" onClick={toggleMenu} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMenu(); } }}>
+                        <i className="fas fa-bars"></i>
                     </div>
                 </div>
             </header>

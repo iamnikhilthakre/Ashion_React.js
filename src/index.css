@@ -320,6 +320,8 @@ ol {
 	background: #ffffff;
 	-webkit-box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
 	box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
+	position: relative;
+	z-index: 10;
 }
 
 .header__logo {
@@ -579,18 +581,22 @@ ol {
 
 .canvas__open {
 	display: none;
-	font-size: 22px;
+	font-size: 18px;
 	color: #111111;
-	height: 35px;
-	width: 35px;
-	line-height: 35px;
+	height: 38px;
+	width: 38px;
+	line-height: 36px;
 	text-align: center;
 	border: 1px solid #111111;
-	border-radius: 2px;
+	border-radius: 4px;
 	cursor: pointer;
 	position: absolute;
 	right: 15px;
-	top: 28px;
+	top: 24px;
+	z-index: 50;
+	-webkit-user-select: none;
+	user-select: none;
+	touch-action: manipulation;
 }
 
 @media only screen and (max-width: 991px) {
@@ -3652,9 +3658,24 @@ ol {
 	}
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 992px) {
 	.container {
 		max-width: 1170px;
+	}
+
+	/* Hide offcanvas menu completely on desktop */
+	.canvas__open {
+		display: none !important;
+	}
+	.offcanvas-menu-overlay {
+		display: none !important;
+		visibility: hidden !important;
+		pointer-events: none !important;
+	}
+	.offcanvas-menu-wrapper {
+		display: none !important;
+		left: -9999px !important;
+		pointer-events: none !important;
 	}
 }
 
@@ -3874,6 +3895,19 @@ ol {
 		top: -2px;
 		content: "/";
 		font-size: 13px;
+	}
+	.banner {
+		height: 400px;
+		background-position: center center;
+	}
+	.banner__slider {
+		padding: 120px 20px 0;
+	}
+	.banner__text h1 {
+		font-size: 56px;
+	}
+	.banner__text span {
+		font-size: 16px;
 	}
 	.header__menu {
 		display: none;
@@ -4108,6 +4142,23 @@ ol {
 	.contact__content {
 		margin-bottom: 40px;
 	}
+	.banner {
+		height: 320px;
+		background-position: right center;
+		background-size: cover;
+	}
+	.banner__slider {
+		padding: 90px 15px 0;
+		text-align: left;
+	}
+	.banner__text h1 {
+		font-size: 52px;
+		line-height: 1.1;
+		margin-bottom: 10px;
+	}
+	.banner__text span {
+		font-size: 14px;
+	}
 }
 
 /* Small Device = 320px */
@@ -4116,8 +4167,26 @@ ol {
 	.categories__item.categories__large__item {
 		padding-left: 30px;
 	}
+	.banner {
+		height: 260px;
+		background-position: 70% center;
+		background-size: cover;
+	}
+	.banner__slider {
+		padding: 65px 15px 0;
+		text-align: left;
+	}
 	.banner__text h1 {
-		font-size: 45px;
+		font-size: 38px;
+		line-height: 1.1;
+		margin-bottom: 8px;
+	}
+	.banner__text span {
+		font-size: 12px;
+		letter-spacing: 0.5px;
+	}
+	.banner__text a {
+		font-size: 13px;
 	}
 	.filter__controls li {
 		margin-right: 5px;
@@ -4169,5 +4238,58 @@ ol {
 	.search-model-form input {
 		width: 100%;
 		font-size: 24px;
+	}
+}
+
+/* ================================================
+   OFFCANVAS MENU — FINAL RESPONSIVE OVERRIDES
+   (guarantees hamburger + overlay + wrapper work on ALL screen sizes <992px)
+   ================================================ */
+
+/* Tablet & smaller — z-indexes + open class always overrides legacy .active mismatch */
+@media only screen and (max-width: 991px) {
+	.offcanvas-menu-overlay {
+		z-index: 999998 !important;
+		visibility: hidden;
+	}
+	.offcanvas-menu-overlay.active {
+		visibility: visible !important;
+	}
+	.offcanvas-menu-wrapper {
+		z-index: 999999 !important;
+		opacity: 1 !important;
+		left: -300px;
+		-webkit-transition: left 0.45s ease, opacity 0.3s ease;
+		-o-transition: left 0.45s ease, opacity 0.3s ease;
+		transition: left 0.45s ease, opacity 0.3s ease;
+	}
+	.offcanvas-menu-wrapper.show-offcanvas-menu-wrapper,
+	.offcanvas-menu-wrapper.active {
+		left: 0 !important;
+		opacity: 1 !important;
+	}
+}
+
+/* Mobile (<=767px) — narrower 270px drawer */
+@media only screen and (max-width: 767px) {
+	.offcanvas-menu-wrapper {
+		width: 270px !important;
+		left: -270px !important;
+	}
+	.offcanvas-menu-wrapper.show-offcanvas-menu-wrapper,
+	.offcanvas-menu-wrapper.active {
+		left: 0 !important;
+	}
+}
+
+/* Small mobile (<=479px) — ensure button alignment polish */
+@media only screen and (max-width: 479px) {
+	.canvas__open {
+		top: 22px;
+		right: 12px;
+		height: 36px;
+		width: 36px;
+		line-height: 34px;
+		font-size: 16px;
 	}
 }
