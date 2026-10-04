@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 function Payment() {
   const { totalPrice } = useSelector((state) => state.cart);
@@ -16,7 +17,7 @@ function Payment() {
     // Simulate payment processing
     setTimeout(() => {
       setLoading(false);
-      alert("Payment Successful ✅\nYour order has been placed.");
+      toast.success("Payment Successful! Your order has been placed.");
       dispatch(clearCart());
       navigate("/");
     }, 2000);

@@ -11,7 +11,7 @@ function Footer() {
               <div className="footer__logo">
                 <Link to="/"><img src="/images/logo.webp" alt="Logo" /></Link>
               </div>
-              <p>Experience premium shopping with AI-powered recommendations and smart search.</p>
+              <p>Experience premium shopping with quality products and smart search features.</p>
               <div className="footer__payment">
                 <a href="#"><img src="/images/pay1.webp" alt="Payment 1" /></a>
                 <a href="#"><img src="/images/pay2.webp" alt="Payment 2" /></a>
@@ -34,9 +34,9 @@ function Footer() {
           </div>
           <div className="col-lg-2 col-md-3 col-sm-4">
             <div className="footer__widget">
-              <h6>AI Features</h6>
+              <h6>Our Features</h6>
               <ul>
-                <li><Link to="#">AI Recommendations</Link></li>
+                <li><Link to="#">Top Quality Picks</Link></li>
                 <li><Link to="#">Smart Search</Link></li>
                 <li><Link to="#">Personalized Shop</Link></li>
               </ul>

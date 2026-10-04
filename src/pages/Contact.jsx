@@ -1,6 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
 function Contact() {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        website: '',
+        message: ''
+    })
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (!formData.name || !formData.email || !formData.message) {
+            toast.error('Please fill in all required fields')
+            return
+        }
+        toast.success('Message sent successfully! We will get back to you soon.')
+        setFormData({ name: '', email: '', website: '', message: '' })
+    }
+
     return (
         <>
             <section className="contact spad">
@@ -44,11 +66,34 @@ function Contact() {
 
                                 <div className="contact__form">
                                     <h5>SEND MESSAGE</h5>
-                                    <form>
-                                        <input type="text" placeholder="Name" />
-                                        <input type="text" placeholder="Email" />
-                                        <input type="text" placeholder="Website" />
-                                        <textarea placeholder="Message"></textarea>
+                                    <form onSubmit={handleSubmit}>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Name *"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                        />
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            placeholder="Email *"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                        />
+                                        <input
+                                            type="text"
+                                            name="website"
+                                            placeholder="Website"
+                                            value={formData.website}
+                                            onChange={handleChange}
+                                        />
+                                        <textarea
+                                            name="message"
+                                            placeholder="Message *"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                        ></textarea>
 
                                         <button
                                             type="submit"

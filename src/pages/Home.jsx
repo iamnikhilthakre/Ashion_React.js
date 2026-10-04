@@ -117,8 +117,8 @@ function Home() {
         <div className="container">
           <div className="row">
             <div className="col-lg-12 products">
-              <h2 className="underline">AI-PREMIUM PRODUCTS</h2>
-              <p className="text-center text-muted mb-4">Curated just for you by our smart AI recommendation engine</p>
+              <h2 className="underline">PREMIUM PRODUCTS</h2>
+              <p className="text-center text-muted mb-4">Handpicked collection of quality products curated just for you</p>
               <ProductList />
             </div>
           </div>
@@ -242,9 +242,9 @@ function Home() {
             </div>
             <div className="col-lg-3 col-md-4 col-sm-6">
               <div className="services__item">
-                <i className="fas fa-brain"></i>
-                <h6>AI Recommendations</h6>
-                <p>Smart product suggestions</p>
+                <i className="fas fa-star"></i>
+                <h6>Top Quality</h6>
+                <p>Premium products curated</p>
               </div>
             </div>
             <div className="col-lg-3 col-md-4 col-sm-6">
@@ -257,7 +257,7 @@ function Home() {
             <div className="col-lg-3 col-md-4 col-sm-6">
               <div className="services__item">
                 <i className="fa fa-headphones"></i>
-                <h6>AI-Powered Search</h6>
+                <h6>Smart Search</h6>
                 <p>Find exactly what you need</p>
               </div>
             </div>

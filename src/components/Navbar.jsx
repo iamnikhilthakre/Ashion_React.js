@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux"
 import { setSearchQuery, toggleSearch, closeSearch } from "../redux/searchSlice"
 import { addToCart } from "../redux/cartSlice"
 import { logout } from "../redux/authSlice"
-import axios from "axios"
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { toast } from 'react-toastify';
+import { products as localProducts } from '../data/products'
 
 function Navbar() {
     const { totalQuantity } = useSelector((state) => state.cart);
@@ -25,18 +26,13 @@ function Navbar() {
 
     useEffect(() => {
         if (query.length >= 2) {
-            const fetchResults = async () => {
+            const fetchResults = () => {
                 setIsSearching(true);
-                try {
-                    const res = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-                    const filtered = res.data.filter(p =>
-                        p.name.toLowerCase().includes(query.toLowerCase()) ||
-                        p.category.toLowerCase().includes(query.toLowerCase())
-                    ).slice(0, 5);
-                    setSearchResults(filtered);
-                } catch (err) {
-                    console.error("Search error:", err);
-                }
+                const filtered = localProducts.filter(p =>
+                    p.name.toLowerCase().includes(query.toLowerCase()) ||
+                    p.category.toLowerCase().includes(query.toLowerCase())
+                ).slice(0, 5);
+                setSearchResults(filtered);
                 setIsSearching(false);
             };
             const timeoutId = setTimeout(fetchResults, 300);
@@ -79,6 +75,7 @@ function Navbar() {
 
     const handleAddToCart = (product) => {
         dispatch(addToCart({ product, quantity: 1 }));
+        toast.success("Added to cart!");
         dispatch(closeSearch());
         setSearchInput("");
         setSearchResults([]);
@@ -86,6 +83,7 @@ function Navbar() {
 
     const handleLogout = () => {
         dispatch(logout());
+        toast.info("Logged out successfully");
         navigate("/");
     };
 
@@ -95,11 +93,11 @@ function Navbar() {
             <div className={`offcanvas-menu-wrapper ${isMenuOpen ? "show-offcanvas-menu-wrapper" : ""}`}>
                 <div className="offcanvas__close" onClick={toggleMenu}>+</div>
                 <ul className="offcanvas__widget">
-                    <li><span className="icon_search search-switch" onClick={handleSearchToggle}></span></li>
-                    <li><NavLink to="/wishlist"><span className="icon_heart_alt"></span>
+                    <li><i className="fas fa-search search-switch" onClick={handleSearchToggle} style={{cursor: 'pointer'}}></i></li>
+                    <li><NavLink to="/wishlist"><i className="far fa-heart"></i>
                         <div className="tip">{totalWishlistItems}</div>
                     </NavLink></li>
-                    <li><NavLink to="/cart"><span className="icon_bag_alt"></span>
+                    <li><NavLink to="/cart"><i className="fas fa-shopping-bag"></i>
                         <div className="tip">{totalQuantity}</div>
                     </NavLink></li>
                 </ul>
@@ -139,7 +137,7 @@ function Navbar() {
                                         <ul className="dropdown">
                                             <li><NavLink to="/cart">Shop Cart</NavLink></li>
                                             <li><NavLink to="/checkout">Checkout</NavLink></li>
-                                            {isAuthenticated && <li><NavLink to="/wishlist">Wishlist</NavLink></li>}
+                                            <li><NavLink to="/wishlist">Wishlist</NavLink></li>
                                         </ul>
                                     </li>
                                     <li><NavLink to="/contact">Contact</NavLink></li>
@@ -197,7 +195,7 @@ function Navbar() {
                 <div className="search-overlay" onClick={(e) => { if (e.target.className === 'search-overlay') dispatch(closeSearch()); }}>
                     <div className="search-modal">
                         <div className="search-header d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="mb-0 fw-bold">AI-Powered Search</h5>
+                  <h5 className="mb-0 fw-bold">Product Search</h5>
                   <button
                     className="btn btn-link text-dark p-0 border-0"
                     onClick={() => dispatch(closeSearch())}
@@ -210,7 +208,7 @@ function Navbar() {
                     <input
                       type="text"
                       className="form-control form-control-lg"
-                      placeholder="Search with AI - find exactly what you need..."
+                      placeholder="Search for products, brands, and more..."
                       value={searchInput}
                       onChange={handleSearchInputChange}
                       autoFocus

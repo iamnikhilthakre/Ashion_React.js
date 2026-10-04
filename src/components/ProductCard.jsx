@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
 
+import { toast } from 'react-toastify';
+
 function ProductCard({ product }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
     dispatch(addToCart({ product, quantity: 1 }));
+    toast.success("Added to cart!");
     navigate("/cart");
   };
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 function Checkout() {
   const { cartItems, totalPrice } = useSelector((state) => state.cart);
@@ -23,7 +24,7 @@ function Checkout() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (cartItems.length === 0) {
-      alert("Your cart is empty!");
+      toast.error("Your cart is empty!");
       return;
     }
     // In a real app, we would validate and save this data

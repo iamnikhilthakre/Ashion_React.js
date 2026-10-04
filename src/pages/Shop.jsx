@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ProductCard from '../components/ProductCard'
-import axios from 'axios'
 import { Link, useSearchParams } from 'react-router-dom'
+import { products as localProducts } from '../data/products'
 
 function Shop() {
   const [products, setProducts] = useState([])
@@ -21,17 +21,12 @@ function Shop() {
   ]
 
   useEffect(() => {
-    const API = `${import.meta.env.VITE_API_URL}/products`
-    axios.get(API)
-      .then((res) => {
-        setProducts(res.data)
-        setFilteredProducts(res.data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error(err)
-        setLoading(false)
-      })
+    // Simulate network delay
+    setTimeout(() => {
+      setProducts(localProducts)
+      setFilteredProducts(localProducts)
+      setLoading(false)
+    }, 300)
   }, [])
 
   useEffect(() => {
@@ -131,16 +126,16 @@ function Shop() {
               </div>
 
               <div className="sidebar__item mb-5">
-                <h5 className="fw-bold mb-4 text-uppercase letter-spacing-1">AI Features</h5>
-                <p className="text-muted small mb-3">Our AI helps you find the perfect products faster!</p>
+                <h5 className="fw-bold mb-4 text-uppercase letter-spacing-1">Our Features</h5>
+                <p className="text-muted small mb-3">We help you find the perfect products faster!</p>
                 <div className="alert alert-light border-0">
                   <div className="d-flex align-items-center gap-2 mb-2">
-                    <i className="fas fa-brain text-danger"></i>
-                    <span className="fw-bold small">Smart Recommendations</span>
+                    <i className="fas fa-star text-danger"></i>
+                    <span className="fw-bold small">Top Quality Picks</span>
                   </div>
                   <div className="d-flex align-items-center gap-2">
                     <i className="fas fa-search text-danger"></i>
-                    <span className="fw-bold small">AI-Powered Search</span>
+                    <span className="fw-bold small">Smart Search</span>
                   </div>
                 </div>
               </div>

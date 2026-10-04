@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { removeFromWishlist } from "../redux/wishlistSlice";
 import { addToCart } from "../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 function Wishlist() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ function Wishlist() {
   const handleAddToCart = (product) => {
     dispatch(addToCart({ product, quantity: 1 }));
     dispatch(removeFromWishlist(product.id));
+    toast.success("Moved to cart!");
     navigate("/cart");
   };
 

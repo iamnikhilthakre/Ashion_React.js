@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
 import ProductCard from "../components/ProductCard";
+import { products as localProducts } from "../data/products";
+
+import { toast } from 'react-toastify';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -18,36 +20,24 @@ function ProductDetails() {
   const isInWishlist = product ? wishlistItems.some(item => String(item.id) === String(product.id)) : false;
 
   useEffect(() => {
-    // Scroll to top when product changes
     window.scrollTo(0, 0);
 
-    let currentCategory = "";
+    const foundProduct = localProducts.find(p => String(p.id) === String(id));
+    if (foundProduct) {
+      setProduct(foundProduct);
+      const currentCategory = foundProduct.category;
 
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/products/${id}`)
-      .then((res) => {
-        setProduct(res.data);
-        currentCategory = res.data.category;
-        // Fetch all products to filter manually (more reliable than API filtering in some json-server setups)
-        return axios.get(`${import.meta.env.VITE_API_URL}/products`);
-      })
-      .then((res) => {
-        // Filter by category and exclude current product
-        const filtered = res.data
-          .filter(p => p.category === currentCategory)
-          .filter(p => String(p.id) !== String(id))
-          .slice(0, 4);
-        
-        // If we still have nothing in that category, just show other products as fallback
-        if (filtered.length === 0) {
-          setRelatedProducts(res.data.filter(p => String(p.id) !== String(id)).slice(0, 4));
-        } else {
-          setRelatedProducts(filtered);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching product details:", err);
-      });
+      const filtered = localProducts
+        .filter(p => p.category === currentCategory)
+        .filter(p => String(p.id) !== String(id))
+        .slice(0, 4);
+
+      if (filtered.length === 0) {
+        setRelatedProducts(localProducts.filter(p => String(p.id) !== String(id)).slice(0, 4));
+      } else {
+        setRelatedProducts(filtered);
+      }
+    }
   }, [id]);
 
   if (!product) {
@@ -57,17 +47,16 @@ function ProductDetails() {
   const handleAddToCart = () => {
     const quantity = parseInt(document.getElementById("product-qty")?.value || 1);
     dispatch(addToCart({ product, quantity }));
+    toast.success("Added to cart!");
   };
 
   const handleBuyNow = () => {
-    // Check if item is already in cart (using string comparison for ID safety)
     const isAlreadyInCart = cartItems.some((item) => String(item.id) === String(product.id));
 
     if (!isAlreadyInCart) {
       handleAddToCart();
     }
 
-    // Always navigate to cart
     navigate("/cart");
   };
 
@@ -391,9 +380,9 @@ function ProductDetails() {
           <div className="related-products mt-5 pt-5">
             <div className="d-flex justify-content-between align-items-end mb-4">
               <div>
-                <span className="text-danger fw-bold text-uppercase small letter-spacing-1">AI-Powered</span>
+                <span className="text-danger fw-bold text-uppercase small letter-spacing-1">Handpicked</span>
                 <h3 className="fw-bold mb-0">You Might Also Like</h3>
-                <p className="text-muted small mb-0">Curated by our smart recommendation engine</p>
+                <p className="text-muted small mb-0">Similar products you may enjoy</p>
               </div>
               <Link to="/shop" className="btn btn-outline-dark btn-sm px-4 fw-bold">VIEW ALL</Link>
             </div>
